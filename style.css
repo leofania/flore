@@ -515,3 +515,8 @@ input:focus,select:focus,textarea:focus{
   .product-admin-preview{grid-template-columns:1fr}
   .product-admin-image img{height:180px}
 }
+
+/* v8 links between admin sections */
+@media (max-width:840px){
+  .header-actions{flex-wrap:wrap}
+}

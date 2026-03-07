@@ -13,9 +13,11 @@ const adminStatus = document.getElementById("productsAdminStatus");
 const productsList = document.getElementById("productsList");
 const productForm = document.getElementById("productForm");
 const saveProductBtn = document.getElementById("saveProductBtn");
+const categorySelect = document.getElementById("productCategory");
 
 let currentFilter = "all";
 let productsCache = [];
+let categoriesCache = [];
 
 function slugify(text) {
   return (text || "")
@@ -29,18 +31,39 @@ function formatPrice(value) {
   return `€${Number(value || 0).toFixed(0)}`;
 }
 
+function renderCategoryOptions() {
+  categorySelect.innerHTML = "";
+  const activeCategories = categoriesCache.filter((c) => c.active !== false);
+  if (!activeCategories.length) {
+    categorySelect.innerHTML = '<option value="">Nessuna categoria attiva</option>';
+    return;
+  }
+  activeCategories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    categorySelect.appendChild(option);
+  });
+}
+
 function resetForm() {
   productForm.reset();
   document.getElementById("productId").value = "";
   document.getElementById("productFeatured").value = "false";
   document.getElementById("productActive").value = "true";
   document.getElementById("productImageUrl").value = "";
+  if (categorySelect.options.length) categorySelect.selectedIndex = 0;
 }
 
 function applyFilter(products) {
   if (currentFilter === "active") return products.filter((p) => p.active === true);
   if (currentFilter === "inactive") return products.filter((p) => p.active === false);
   return products;
+}
+
+function getCategoryNameById(categoryId) {
+  const category = categoriesCache.find((c) => c.id === categoryId);
+  return category?.name || "-";
 }
 
 function renderProducts() {
@@ -71,7 +94,7 @@ function renderProducts() {
         </div>
 
         <div class="order-meta">
-          <div><strong>Categoria:</strong> ${product.category || "-"}</div>
+          <div><strong>Categoria:</strong> ${getCategoryNameById(product.category_id)}</div>
           <div><strong>Descrizione:</strong> ${product.description || "-"}</div>
           <div><strong>In evidenza:</strong> ${product.featured ? "Sì" : "No"}</div>
           <div><strong>Slug:</strong> ${product.slug || "-"}</div>
@@ -86,6 +109,22 @@ function renderProducts() {
     `;
     productsList.appendChild(card);
   });
+}
+
+async function loadCategories() {
+  const { data, error } = await supabaseClient
+    .from("categories")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
+
+  if (error) {
+    adminStatus.textContent = `Errore categorie: ${error.message}`;
+    return;
+  }
+
+  categoriesCache = data || [];
+  renderCategoryOptions();
 }
 
 async function loadProducts() {
@@ -111,12 +150,12 @@ function fillForm(productId) {
 
   document.getElementById("productId").value = product.id;
   document.getElementById("productName").value = product.name || "";
-  document.getElementById("productCategory").value = product.category || "bouquet";
   document.getElementById("productPrice").value = product.price || "";
   document.getElementById("productDescription").value = product.description || "";
   document.getElementById("productFeatured").value = product.featured ? "true" : "false";
   document.getElementById("productActive").value = product.active ? "true" : "false";
   document.getElementById("productImageUrl").value = product.image_url || "";
+  if (product.category_id) categorySelect.value = String(product.category_id);
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -150,7 +189,7 @@ async function saveProduct(event) {
   try {
     const id = document.getElementById("productId").value.trim();
     const name = document.getElementById("productName").value.trim();
-    const category = document.getElementById("productCategory").value;
+    const category_id = Number(document.getElementById("productCategory").value || 0);
     const price = Number(document.getElementById("productPrice").value || 0);
     const description = document.getElementById("productDescription").value.trim();
     const featured = document.getElementById("productFeatured").value === "true";
@@ -161,7 +200,7 @@ async function saveProduct(event) {
     const payload = {
       name,
       slug,
-      category,
+      category_id,
       price,
       description,
       featured,
@@ -171,14 +210,9 @@ async function saveProduct(event) {
 
     let response;
     if (id) {
-      response = await supabaseClient
-        .from("products")
-        .update(payload)
-        .eq("id", Number(id));
+      response = await supabaseClient.from("products").update(payload).eq("id", Number(id));
     } else {
-      response = await supabaseClient
-        .from("products")
-        .insert([payload]);
+      response = await supabaseClient.from("products").insert([payload]);
     }
 
     if (response.error) throw response.error;
@@ -235,6 +269,7 @@ async function checkSession() {
   const { data } = await supabaseClient.auth.getSession();
   if (data.session) {
     adminStatus.textContent = `Autenticato come ${data.session.user.email}`;
+    await loadCategories();
     loadProducts();
   } else {
     adminStatus.textContent = "Non autenticato.";
@@ -256,15 +291,21 @@ loginForm.addEventListener("submit", async (event) => {
   }
 
   adminStatus.textContent = `Autenticato come ${email}`;
+  await loadCategories();
   loadProducts();
 });
 
-refreshBtn.addEventListener("click", loadProducts);
+refreshBtn.addEventListener("click", async () => {
+  await loadCategories();
+  loadProducts();
+});
+
 logoutBtn.addEventListener("click", async () => {
   await supabaseClient.auth.signOut();
   adminStatus.textContent = "Logout effettuato.";
   productsList.innerHTML = "<p class='empty-message'>Effettua il login per vedere i prodotti.</p>";
 });
+
 newProductBtn.addEventListener("click", resetForm);
 productForm.addEventListener("submit", saveProduct);
 

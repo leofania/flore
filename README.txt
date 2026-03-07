@@ -1,40 +1,34 @@
-FLORÈ V7 — ADMIN PRODOTTI COMPLETA
+FLORÈ V8 — CATEGORIE DINAMICHE
 
-Nuova pagina:
-- admin-products.html
-
-Funzioni disponibili:
-- login admin
-- lista prodotti
-- aggiungi prodotto
-- modifica prodotto
-- elimina prodotto
-- carica foto prodotto
-- cambia disponibilità
-- gestisci prezzo, descrizione, categoria, featured
+Novità:
+- tabella categories
+- admin-categories.html
+- admin-products collegato alle categorie dinamiche
+- frontend con filtri categorie letti dal database
+- prodotti collegati tramite category_id
 
 FILE DA CARICARE SU GITHUB:
+- admin-categories.html
+- admin-categories.js
 - admin-products.html
 - admin-products.js
+- script.js
 - style.css
-- supabase-setup-products.sql
+- supabase-setup-v8.sql
 
 FILE DA TENERE:
+- index.html
 - admin.html
 - admin.js
-- index.html
-- script.js
 - logo-flore.svg
 - portfolio-flore.pdf
 
 SUPABASE:
-1) Apri SQL Editor
-2) Esegui supabase-setup-products.sql
+1) apri SQL Editor
+2) esegui tutto il file supabase-setup-v8.sql
 
 IMPORTANTE:
-- crea o mantieni un utente admin in Authentication > Users
-- accedi in admin-products.html
-- le immagini vengono caricate nel bucket storage 'products'
+Dopo la migrazione, i filtri frontend verranno creati automaticamente dalle categorie attive presenti nel database.
 
-RISULTATO:
-Il cliente potrà gestire tutto dal pannello senza entrare nella dashboard Supabase.
+CONSIGLIO:
+Prima crea le categorie in admin-categories.html, poi usa admin-products.html per associare i prodotti.

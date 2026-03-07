@@ -19,8 +19,10 @@ const checkoutForm = document.getElementById("checkoutForm");
 const submitOrderBtn = document.getElementById("submitOrderBtn");
 const mobileNav = document.getElementById("mobileNav");
 const navToggle = document.getElementById("navToggle");
+const filtersContainer = document.querySelector(".filters");
 
 let products = [];
+let categories = [];
 let activeFilter = "all";
 let cart = JSON.parse(localStorage.getItem("flore_cart") || "[]");
 
@@ -85,14 +87,42 @@ function fallbackImage(label) {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
-function normalizeCategory(category) {
-  return (category || "").trim().toLowerCase();
+function getCategoryName(categoryId) {
+  const category = categories.find((c) => c.id === categoryId);
+  return category?.name || "Prodotto";
+}
+
+function renderFilters() {
+  if (!filtersContainer) return;
+  filtersContainer.innerHTML = '<button class="filter-btn active" data-filter="all" type="button">Tutti</button>';
+
+  categories.filter((c) => c.active !== false).forEach((category) => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.type = "button";
+    btn.dataset.filter = String(category.id);
+    btn.textContent = category.name;
+    filtersContainer.appendChild(btn);
+  });
+
+  attachFilterEvents();
+}
+
+function attachFilterEvents() {
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeFilter = btn.dataset.filter;
+      renderProducts();
+    });
+  });
 }
 
 function renderProducts() {
   const filtered = activeFilter === "all"
     ? products
-    : products.filter((p) => normalizeCategory(p.category) === activeFilter);
+    : products.filter((p) => String(p.category_id) === String(activeFilter));
 
   productsContainer.innerHTML = "";
 
@@ -114,12 +144,12 @@ function renderProducts() {
         <img src="${image}" alt="${product.name}" loading="lazy" />
       </div>
       <div class="product-content">
-        <span class="product-category">${product.category || "bouquet"}</span>
+        <span class="product-category">${getCategoryName(product.category_id)}</span>
         <h3 class="product-title">${product.name}</h3>
         <p class="product-description">${product.description || "Composizione floreale naturale ed elegante."}</p>
         <div class="product-bottom">
           <strong class="product-price">${formatPrice(product.price)}</strong>
-          <button class="btn btn-primary" data-add="${product.id}" type="button">Aggiungi</button>
+          <button class="btn btn-primary" data-add="${product.id}" type="button" ${product.active === false ? "disabled" : ""}>${product.active === false ? "Non disponibile" : "Aggiungi"}</button>
         </div>
       </div>
     `;
@@ -187,7 +217,7 @@ function renderCart() {
 
 function addToCart(productId) {
   const product = products.find((item) => item.id === Number(productId));
-  if (!product) return;
+  if (!product || product.active === false) return;
 
   const existing = cart.find((item) => item.id === product.id);
 
@@ -224,6 +254,23 @@ function removeItem(productId) {
   cart = cart.filter((row) => row.id !== Number(productId));
   saveCart();
   renderCart();
+}
+
+async function loadCategories() {
+  const { data, error } = await supabaseClient
+    .from("categories")
+    .select("*")
+    .eq("active", true)
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  categories = data || [];
+  renderFilters();
 }
 
 async function loadProducts() {
@@ -350,15 +397,6 @@ document.addEventListener("click", (event) => {
   if (removeId) removeItem(removeId);
 });
 
-document.querySelectorAll(".filter-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    activeFilter = btn.dataset.filter;
-    renderProducts();
-  });
-});
-
 document.querySelectorAll(".mobile-nav a").forEach((link) => {
   link.addEventListener("click", () => mobileNav.classList.remove("open"));
 });
@@ -383,4 +421,4 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 document.getElementById("deliveryDate").min = tomorrow.toISOString().split("T")[0];
 
 renderCart();
-loadProducts();
+loadCategories().then(loadProducts);
