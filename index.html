@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-   <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -76,7 +75,7 @@
 
         <div class="hero-media">
           <div class="hero-visual">
-            <img src="hero-villa.jpg" alt="Allestimento floreale Florè in villa storica" class="hero-photo">
+            <img src="hero-villa.png" alt="Allestimento floreale Florè in villa storica" class="hero-photo">
             <div class="hero-stamp">Florè</div>
           </div>
           <div class="hero-floating hero-floating-top">
@@ -96,7 +95,7 @@
         <span>Bouquet personalizzati</span>
         <span>Allestimenti floreali</span>
         <span>Matrimoni & eventi</span>
-        <span>Progetti su misura</span>
+        <span>Responsive mobile-first</span>
       </div>
     </section>
 
@@ -295,7 +294,7 @@
       <div>
         <h4>Contatti</h4>
         <ul class="footer-list">
-          <li><a href="tel:+393888513480">+39 388 851 3480</a></li>
+          <li><a href="https://wa.me/393888513480?text=Ciao%20Flor%C3%A8%2C%20vorrei%20ricevere%20informazioni%20sulle%20tue%20creazioni%20floreali." target="_blank" rel="noreferrer">WhatsApp: +39 388 851 3480</a></li>
           <li><a href="mailto:faniamariagiovannaa@hotmail.com">faniamariagiovannaa@hotmail.com</a></li>
           <li><a href="https://instagram.com/floreconlaeaccentata" target="_blank" rel="noreferrer">@floreconlaeaccentata</a></li>
         </ul>
@@ -336,6 +335,20 @@
   </aside>
 
   <div class="toast" id="toast"></div>
+
+
+  <div class="wa-modal" id="waModal" aria-hidden="true">
+    <div class="wa-modal-overlay" id="waModalOverlay"></div>
+    <div class="wa-modal-card">
+      <span class="mini-label">Ordine registrato</span>
+      <h3>Continua su WhatsApp</h3>
+      <p>Per confermare più rapidamente il tuo ordine, puoi inviare subito il messaggio già compilato a Florè.</p>
+      <div class="wa-modal-actions">
+        <a href="#" id="waModalLink" class="btn btn-primary btn-block" target="_blank" rel="noreferrer">Apri WhatsApp</a>
+        <button type="button" id="waModalClose" class="btn btn-secondary btn-block">Chiudi</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

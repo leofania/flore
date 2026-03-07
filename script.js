@@ -17,6 +17,10 @@ const cartOverlay = document.getElementById("cartOverlay");
 const toast = document.getElementById("toast");
 const checkoutForm = document.getElementById("checkoutForm");
 const submitOrderBtn = document.getElementById("submitOrderBtn");
+const waModal = document.getElementById("waModal");
+const waModalLink = document.getElementById("waModalLink");
+const waModalClose = document.getElementById("waModalClose");
+const waModalOverlay = document.getElementById("waModalOverlay");
 const mobileNav = document.getElementById("mobileNav");
 const navToggle = document.getElementById("navToggle");
 const filtersContainer = document.querySelector(".filters");
@@ -62,6 +66,21 @@ function closeCart() {
 
 function toggleMobileNav() {
   mobileNav.classList.toggle("open");
+}
+
+function openWhatsappModal(url) {
+  if (!waModal || !waModalLink) return;
+  waModalLink.href = url;
+  waModal.classList.add("open");
+  waModal.setAttribute("aria-hidden", "false");
+  lockBody();
+}
+
+function closeWhatsappModal() {
+  if (!waModal) return;
+  waModal.classList.remove("open");
+  waModal.setAttribute("aria-hidden", "true");
+  unlockBody();
 }
 
 function fallbackImage(label) {
@@ -375,7 +394,10 @@ async function submitOrder(event) {
     renderCart();
     closeCart();
     showToast("Ordine registrato correttamente");
-    window.open(whatsappUrl, "_blank");
+    openWhatsappModal(whatsappUrl);
+    setTimeout(() => {
+      window.location.href = whatsappUrl;
+    }, 450);
     window.location.hash = "#checkout";
   } catch (error) {
     console.error(error);
@@ -412,6 +434,7 @@ checkoutForm.addEventListener("submit", submitOrder);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    closeWhatsappModal();
     closeCart();
     mobileNav.classList.remove("open");
   }
@@ -423,3 +446,6 @@ document.getElementById("deliveryDate").min = tomorrow.toISOString().split("T")[
 
 renderCart();
 loadCategories().then(loadProducts);
+
+if (waModalClose) waModalClose.addEventListener("click", closeWhatsappModal);
+if (waModalOverlay) waModalOverlay.addEventListener("click", closeWhatsappModal);

@@ -864,3 +864,68 @@ input:focus,select:focus,textarea:focus{
     width:100%;
   }
 }
+
+
+/* v12 whatsapp improvements */
+.wa-modal{
+  position:fixed;
+  inset:0;
+  z-index:140;
+  pointer-events:none;
+}
+.wa-modal.open{
+  pointer-events:auto;
+}
+.wa-modal-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(25,19,18,.42);
+  opacity:0;
+  transition:opacity .2s ease;
+}
+.wa-modal.open .wa-modal-overlay{
+  opacity:1;
+}
+.wa-modal-card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(.96);
+  width:min(92vw,520px);
+  padding:26px;
+  border-radius:28px;
+  background:rgba(255,253,251,.98);
+  border:1px solid var(--line);
+  box-shadow:0 28px 80px rgba(0,0,0,.18);
+  opacity:0;
+  transition:transform .2s ease, opacity .2s ease;
+}
+.wa-modal.open .wa-modal-card{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+}
+.wa-modal-card h3{
+  margin:0 0 10px;
+  font-size:2rem;
+  line-height:1;
+  font-family:"Cormorant Garamond",serif;
+}
+.wa-modal-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+}
+.wa-modal-actions{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+@media (max-width:560px){
+  .wa-modal-card{
+    padding:20px;
+    border-radius:22px;
+  }
+  .wa-modal-card h3{
+    font-size:1.7rem;
+  }
+}
