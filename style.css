@@ -625,3 +625,134 @@ input:focus,select:focus,textarea:focus{
   .editorial-person-photo{width:72px;height:72px;border-radius:18px}
   .portfolio-media{min-height:220px}
 }
+
+
+/* v10 front-end polish */
+.desktop-nav a,
+.mobile-nav a{
+  position:relative;
+}
+.desktop-nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-8px;
+  height:2px;
+  background:var(--brand);
+  transform:scaleX(0);
+  transform-origin:center;
+  transition:transform .2s ease;
+}
+.desktop-nav a:hover::after{transform:scaleX(1)}
+.ghost-link{
+  white-space:nowrap;
+}
+.portfolio-card{
+  display:flex;
+  flex-direction:column;
+}
+.portfolio-card.tall .portfolio-content{
+  margin-top:auto;
+}
+.portfolio-card.tall{
+  min-height:100%;
+}
+.portfolio-card.tall .portfolio-media{
+  flex:1;
+  min-height:540px;
+}
+@media (max-width:1100px){
+  .portfolio-card.tall .portfolio-media{min-height:320px}
+}
+@media (max-width:560px){
+  .site-header{
+    position:sticky;
+    top:0;
+  }
+  .nav{
+    min-height:68px;
+    grid-template-columns:auto 1fr auto;
+  }
+  .brand{
+    min-width:auto;
+  }
+  .brand-logo{height:30px}
+  .nav-toggle{
+    width:44px;
+    height:44px;
+    margin-inline:auto;
+    border-radius:14px;
+    background:rgba(255,255,255,.36);
+    border:1px solid var(--line);
+    font-size:1.9rem;
+  }
+  .mobile-nav{
+    padding:12px 16px 16px;
+    gap:10px;
+  }
+  .mobile-nav a{
+    display:block;
+    padding:12px 14px;
+    border-radius:14px;
+    background:rgba(255,255,255,.55);
+    border:1px solid var(--line);
+    color:var(--text);
+  }
+  .cart-button{
+    width:52px;
+    height:52px;
+    min-height:52px;
+    border-radius:50%;
+    background:#fff;
+  }
+  .cart-badge{
+    width:36px;
+    height:36px;
+  }
+  .hero{
+    padding-top:14px;
+  }
+  .hero-grid{
+    gap:14px;
+  }
+  .hero-copy{
+    order:1;
+  }
+  .hero-media{
+    order:2;
+  }
+  .hero h1{
+    font-size:2.8rem;
+    letter-spacing:-.045em;
+  }
+  .hero-text{
+    font-size:1rem;
+    line-height:1.55;
+    margin-bottom:0;
+  }
+  .hero-actions .btn{
+    min-height:50px;
+  }
+  .portfolio-grid{
+    gap:18px;
+  }
+  .portfolio-content{
+    padding:14px 16px 16px;
+  }
+  .portfolio-content h3{
+    font-size:1.12rem;
+  }
+  .section-head-products{
+    gap:14px;
+  }
+  .filters{
+    width:100%;
+    overflow:auto;
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+  }
+  .filter-btn{
+    flex:0 0 auto;
+  }
+}
