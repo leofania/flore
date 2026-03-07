@@ -1,61 +1,47 @@
-FLORÈ V3 — FILE DA CARICARE
+FLORÈ V4 — AGGIUNTE IMPLEMENTATE
 
-Contenuto del pacchetto:
+Contenuto:
 - index.html
 - style.css
 - script.js
+- admin.html
+- admin.js
 - logo-flore.svg
+- portfolio-flore.pdf
 - supabase-setup.sql
+- README.txt
 
-1) GITHUB
-Sostituisci nel repo i file:
+NOVITÀ:
+1. Footer con contatti
+2. Pulsante download portfolio PDF
+3. Conferma ordine via WhatsApp (apre chat con messaggio precompilato)
+4. Area admin ordini con login Supabase Auth
+
+GITHUB:
+Sostituisci / aggiungi questi file nel repo:
 - index.html
 - style.css
 - script.js
-
-e aggiungi:
+- admin.html
+- admin.js
 - logo-flore.svg
+- portfolio-flore.pdf
 
-Fai commit e attendi il deploy di GitHub Pages.
+SUPABASE:
+Esegui supabase-setup.sql nello SQL Editor.
 
-2) SUPABASE
-Apri SQL Editor ed esegui il file:
-- supabase-setup.sql
+AREA ADMIN:
+1) Apri Supabase > Authentication > Users
+2) Crea utente admin con email e password
+3) Vai su admin.html
+4) Accedi con quelle credenziali
+5) Vedrai ordini e prodotti ordinati
 
-Questo abilita:
-- lettura pubblica tabella products
-- inserimento pubblico tabella orders
-- inserimento pubblico tabella order_items
-- inserimento pubblico tabella custom_requests
+WHATSAPP:
+Dopo il salvataggio ordine, il sito apre WhatsApp su:
++39 388 851 3480
+con testo precompilato dell'ordine.
 
-3) TABELLA PRODUCTS
-Il sito usa questi campi:
-- id
-- name
-- description
-- price
-- category
-- image_url
-- active
-
-Se image_url è vuoto, il sito mostra un visual fallback elegante.
-Se active = true, il prodotto compare.
-
-4) COSA È GIÀ RISOLTO
-- nuovo design coerente con il brand
-- palette aggiornata
-- logo integrato
-- hero più premium
-- portfolio placeholder elegante
-- catalogo responsive
-- carrello drawer migliorato
-- chiusura con overlay / X / ESC
-- blocco scroll body mentre il carrello è aperto
-- checkout funzionante con Supabase
-
-5) PROSSIMI STEP CONSIGLIATI
-- sostituire i portfolio placeholder con foto reali
-- compilare image_url per i prodotti
-- aggiungere sezione Eventi / Matrimoni separata
-- attivare WhatsApp o email post-ordine
-- aggiungere pagamento online in futuro
+NOTE:
+- Puoi aggiungere altri prodotti in products quando il cliente te li passa.
+- Se image_url è vuoto, il sito usa un visual di fallback.

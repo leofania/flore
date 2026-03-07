@@ -3,6 +3,8 @@ const supabaseClient = window.supabase.createClient(
   "sb_publishable_nUldNy4z7YKT_q1jPcZZig_9f5wDGz8"
 );
 
+const FLORE_WHATSAPP = "393888513480";
+
 const productsContainer = document.getElementById("products");
 const productsState = document.getElementById("productsState");
 const cartCount = document.getElementById("cartCount");
@@ -246,6 +248,30 @@ async function loadProducts() {
   }
 }
 
+function buildWhatsappUrl(order) {
+  const lines = [
+    "Ciao Florè, ho appena inviato un ordine dal sito.",
+    "",
+    `Ordine #${order.id}`,
+    `Nome: ${order.customer_name}`,
+    `Telefono: ${order.phone}`,
+    `Data consegna: ${order.delivery_date}`,
+    `Fascia oraria: ${order.delivery_time}`,
+    `Indirizzo: ${order.delivery_address}`,
+    `Messaggio regalo: ${order.card_message || "-"}`,
+    "",
+    "Prodotti:"
+  ];
+
+  cart.forEach((item) => {
+    lines.push(`- ${item.name} x${item.quantity} (${formatPrice(item.price * item.quantity)})`);
+  });
+
+  lines.push("", `Totale: ${formatPrice(order.total_amount)}`);
+
+  return `https://wa.me/${FLORE_WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
 async function submitOrder(event) {
   event.preventDefault();
 
@@ -298,12 +324,15 @@ async function submitOrder(event) {
 
     if (itemsError) throw itemsError;
 
+    const whatsappUrl = buildWhatsappUrl(orderData[0]);
+
     checkoutForm.reset();
     cart = [];
     saveCart();
     renderCart();
     closeCart();
     showToast("Ordine registrato correttamente");
+    window.open(whatsappUrl, "_blank");
     window.location.hash = "#checkout";
   } catch (error) {
     console.error(error);
@@ -322,7 +351,7 @@ document.addEventListener("click", (event) => {
 
   if (addId) addToCart(addId);
   if (increaseId) updateQuantity(increaseId, 1);
-  if (decreaseId) updateQuantity(increaseId || decreaseId, -1);
+  if (decreaseId) updateQuantity(decreaseId, -1);
   if (removeId) removeItem(removeId);
 });
 
