@@ -1,47 +1,39 @@
-FLORÈ V4 — AGGIUNTE IMPLEMENTATE
+FLORÈ V5 — FIX MOBILE + FIX ORDINI
 
-Contenuto:
-- index.html
-- style.css
-- script.js
-- admin.html
-- admin.js
-- logo-flore.svg
-- portfolio-flore.pdf
-- supabase-setup.sql
-- README.txt
+Cosa risolve:
+1. Fix gerarchia mobile header/hero
+2. Bottoni hero più ordinati su mobile
+3. Carrello mobile più compatto
+4. Checkout responsive più pulito
+5. FIX errore salvataggio ordini RLS
 
-NOVITÀ:
-1. Footer con contatti
-2. Pulsante download portfolio PDF
-3. Conferma ordine via WhatsApp (apre chat con messaggio precompilato)
-4. Area admin ordini con login Supabase Auth
+PERCHÉ L'ORDINE NON ANDAVA:
+Con l'inserimento classico su orders/order_items e .select(), Supabase richiedeva policy aggiuntive.
+Questa versione usa una funzione RPC sicura:
+create_public_order(...)
+Così l'ordine viene salvato senza esporre lettura anonima delle tabelle ordini.
 
 GITHUB:
-Sostituisci / aggiungi questi file nel repo:
+Sostituisci:
 - index.html
 - style.css
 - script.js
+- supabase-setup.sql
+
+Mantieni anche:
 - admin.html
 - admin.js
 - logo-flore.svg
 - portfolio-flore.pdf
 
 SUPABASE:
-Esegui supabase-setup.sql nello SQL Editor.
+1) Apri SQL Editor
+2) Esegui tutto il file supabase-setup.sql
+3) Se compare un warning, conferma
 
-AREA ADMIN:
-1) Apri Supabase > Authentication > Users
-2) Crea utente admin con email e password
-3) Vai su admin.html
-4) Accedi con quelle credenziali
-5) Vedrai ordini e prodotti ordinati
-
-WHATSAPP:
-Dopo il salvataggio ordine, il sito apre WhatsApp su:
-+39 388 851 3480
-con testo precompilato dell'ordine.
-
-NOTE:
-- Puoi aggiungere altri prodotti in products quando il cliente te li passa.
-- Se image_url è vuoto, il sito usa un visual di fallback.
+TEST DOPO IL DEPLOY:
+- aggiungi prodotto
+- compila checkout
+- invia ordine
+- verifica apertura WhatsApp
+- verifica ordine in admin.html dopo login admin

@@ -293,38 +293,33 @@ async function submitOrder(event) {
   submitOrderBtn.textContent = "Invio in corso...";
 
   try {
-    const { data: orderData, error: orderError } = await supabaseClient
-      .from("orders")
-      .insert([{
-        customer_name,
-        phone,
-        delivery_address,
-        delivery_date,
-        delivery_time,
-        card_message,
-        total_amount,
-        status: "new"
-      }])
-      .select();
+    const { data: orderId, error } = await supabaseClient.rpc("create_public_order", {
+      p_customer_name: customer_name,
+      p_phone: phone,
+      p_delivery_address: delivery_address,
+      p_delivery_date: delivery_date,
+      p_delivery_time: delivery_time,
+      p_card_message: card_message,
+      p_total_amount: total_amount,
+      p_items: cart.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price
+      }))
+    });
 
-    if (orderError) throw orderError;
+    if (error) throw error;
 
-    const orderId = orderData[0].id;
-
-    const itemsPayload = cart.map((item) => ({
-      order_id: orderId,
-      product_id: item.id,
-      quantity: item.quantity,
-      unit_price: item.price
-    }));
-
-    const { error: itemsError } = await supabaseClient
-      .from("order_items")
-      .insert(itemsPayload);
-
-    if (itemsError) throw itemsError;
-
-    const whatsappUrl = buildWhatsappUrl(orderData[0]);
+    const whatsappUrl = buildWhatsappUrl({
+      id: orderId,
+      customer_name,
+      phone,
+      delivery_address,
+      delivery_date,
+      delivery_time,
+      card_message,
+      total_amount
+    });
 
     checkoutForm.reset();
     cart = [];
