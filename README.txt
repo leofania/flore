@@ -1,34 +1,32 @@
-FLORÈ V8 — CATEGORIE DINAMICHE
+FLORÈ V13 — PREZZO SU RICHIESTA
 
 Novità:
-- tabella categories
-- admin-categories.html
-- admin-products collegato alle categorie dinamiche
-- frontend con filtri categorie letti dal database
-- prodotti collegati tramite category_id
+- nei prodotti puoi scegliere "Prezzo fisso" oppure "Su richiesta"
+- il prezzo non è più obbligatorio
+- nel frontend i prodotti "Su richiesta" mostrano:
+  - etichetta "Su richiesta"
+  - pulsante "Richiedi info" con messaggio WhatsApp già precompilato
+- dopo l'ordine compare una modale che invita a continuare su WhatsApp
+- da mobile il link WhatsApp è più affidabile
+- admin prodotti aggiornato con:
+  - prezzo su richiesta
+  - ordine visualizzazione
+  - ricerca
+  - duplicazione
 
 FILE DA CARICARE SU GITHUB:
-- admin-categories.html
-- admin-categories.js
-- admin-products.html
-- admin-products.js
-- script.js
-- style.css
-- supabase-setup-v8.sql
-
-FILE DA TENERE:
 - index.html
+- style.css
+- script.js
 - admin.html
 - admin.js
-- logo-flore.svg
-- portfolio-flore.pdf
+- admin-products.html
+- admin-products.js
+- supabase-setup-v13.sql
 
 SUPABASE:
 1) apri SQL Editor
-2) esegui tutto il file supabase-setup-v8.sql
+2) esegui tutto il file supabase-setup-v13.sql
 
 IMPORTANTE:
-Dopo la migrazione, i filtri frontend verranno creati automaticamente dalle categorie attive presenti nel database.
-
-CONSIGLIO:
-Prima crea le categorie in admin-categories.html, poi usa admin-products.html per associare i prodotti.
+Dopo la migrazione puoi lasciare il prezzo vuoto nei prodotti "Su richiesta".

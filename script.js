@@ -163,11 +163,11 @@ function renderProducts() {
         <img src="${image}" alt="${product.name}" loading="lazy" />
       </div>
       <div class="product-content">
-        <div class="product-badges">${product.featured ? '<span class="catalog-badge catalog-badge-featured">In evidenza</span>' : ""}${product.active === false ? '<span class="catalog-badge catalog-badge-unavailable">Non disponibile</span>' : ""}</div>\n        <span class="product-category">${getCategoryName(product.category_id)}</span>\n        <h3 class="product-title">${product.name}</h3>
+        <div class="product-badges">${product.featured ? '<span class="catalog-badge catalog-badge-featured">In evidenza</span>' : ""}${product.price_on_request ? '<span class="catalog-badge catalog-badge-featured">Su richiesta</span>' : ""}${product.active === false ? '<span class="catalog-badge catalog-badge-unavailable">Non disponibile</span>' : ""}</div>\n        <span class="product-category">${getCategoryName(product.category_id)}</span>\n        <h3 class="product-title">${product.name}</h3>
         <p class="product-description">${product.description || "Composizione floreale naturale ed elegante."}</p>
         <div class="product-bottom">
-          <strong class="product-price">${formatPrice(product.price)}</strong>
-          <button class="btn btn-primary" data-add="${product.id}" type="button" ${product.active === false ? "disabled" : ""}>${product.active === false ? "Non disponibile" : "Aggiungi"}</button>
+          <strong class="product-price">${product.price_on_request ? "Su richiesta" : formatPrice(product.price)}</strong>
+          ${product.active === false ? `<button class="btn btn-primary" type="button" disabled>Non disponibile</button>` : product.price_on_request ? `<a class="btn btn-primary" target="_blank" rel="noreferrer" href="https://wa.me/${FLORE_WHATSAPP}?text=${encodeURIComponent(`Ciao Florè, vorrei ricevere informazioni su: ${product.name}`)}">Richiedi info</a>` : `<button class="btn btn-primary" data-add="${product.id}" type="button">Aggiungi</button>`}
         </div>
       </div>
     `;

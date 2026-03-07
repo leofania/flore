@@ -14,6 +14,7 @@ const productsList = document.getElementById("productsList");
 const productForm = document.getElementById("productForm");
 const saveProductBtn = document.getElementById("saveProductBtn");
 const categorySelect = document.getElementById("productCategory");
+const productsSearch = document.getElementById("productsSearch");
 
 let currentFilter = "all";
 let currentSearch = "";
@@ -33,6 +34,7 @@ function formatPrice(value) {
 }
 
 function renderCategoryOptions() {
+  if (!categorySelect) return;
   categorySelect.innerHTML = "";
   const activeCategories = categoriesCache.filter((c) => c.active !== false);
   if (!activeCategories.length) {
@@ -52,9 +54,10 @@ function resetForm() {
   document.getElementById("productId").value = "";
   document.getElementById("productFeatured").value = "false";
   document.getElementById("productActive").value = "true";
+  document.getElementById("productPriceOnRequest").value = "false";
   document.getElementById("productSortOrder").value = "1";
   document.getElementById("productImageUrl").value = "";
-  if (categorySelect.options.length) categorySelect.selectedIndex = 0;
+  if (categorySelect && categorySelect.options.length) categorySelect.selectedIndex = 0;
 }
 
 function applyFilter(products) {
@@ -92,7 +95,7 @@ function renderProducts() {
           <h3 style="margin:0 0 6px;">${product.name}</h3>
           <span class="admin-chip">${product.active ? "disponibile" : "non disponibile"}</span>
         </div>
-        <strong>${formatPrice(product.price)}</strong>
+        <strong>${product.price_on_request ? "Su richiesta" : formatPrice(product.price)}</strong>
       </div>
 
       <div class="product-admin-preview">
@@ -104,6 +107,7 @@ function renderProducts() {
           <div><strong>Categoria:</strong> ${getCategoryNameById(product.category_id)}</div>
           <div><strong>Descrizione:</strong> ${product.description || "-"}</div>
           <div><strong>In evidenza:</strong> ${product.featured ? "Sì" : "No"}</div>
+          <div><strong>Prezzo:</strong> ${product.price_on_request ? "Su richiesta" : formatPrice(product.price)}</div>
           <div><strong>Ordine:</strong> ${product.sort_order ?? "-"}</div>
           <div><strong>Slug:</strong> ${product.slug || "-"}</div>
         </div>
@@ -142,7 +146,7 @@ async function loadProducts() {
   const { data, error } = await supabaseClient
     .from("products")
     .select("*")
-    .order("sort_order", { ascending: true, nullsFirst: false })
+    .order("sort_order", { ascending: true })
     .order("id", { ascending: false });
 
   if (error) {
@@ -160,13 +164,14 @@ function fillForm(productId) {
 
   document.getElementById("productId").value = product.id;
   document.getElementById("productName").value = product.name || "";
-  document.getElementById("productPrice").value = product.price || "";
+  document.getElementById("productPrice").value = product.price ?? "";
   document.getElementById("productDescription").value = product.description || "";
   document.getElementById("productFeatured").value = product.featured ? "true" : "false";
   document.getElementById("productActive").value = product.active ? "true" : "false";
+  document.getElementById("productPriceOnRequest").value = product.price_on_request ? "true" : "false";
   document.getElementById("productSortOrder").value = product.sort_order ?? 1;
   document.getElementById("productImageUrl").value = product.image_url || "";
-  if (product.category_id) categorySelect.value = String(product.category_id);
+  if (product.category_id && categorySelect) categorySelect.value = String(product.category_id);
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -201,7 +206,9 @@ async function saveProduct(event) {
     const id = document.getElementById("productId").value.trim();
     const name = document.getElementById("productName").value.trim();
     const category_id = Number(document.getElementById("productCategory").value || 0);
-    const price = Number(document.getElementById("productPrice").value || 0);
+    const price_on_request = document.getElementById("productPriceOnRequest").value === "true";
+    const rawPrice = document.getElementById("productPrice").value;
+    const price = price_on_request ? null : Number(rawPrice || 0);
     const description = document.getElementById("productDescription").value.trim();
     const sort_order = Number(document.getElementById("productSortOrder").value || 1);
     const featured = document.getElementById("productFeatured").value === "true";
@@ -214,10 +221,11 @@ async function saveProduct(event) {
       slug,
       category_id,
       price,
+      price_on_request,
       description,
+      sort_order,
       featured,
       active,
-      sort_order,
       image_url
     };
 
@@ -256,6 +264,33 @@ async function toggleProduct(productId) {
   }
 
   adminStatus.textContent = "Disponibilità aggiornata.";
+  loadProducts();
+}
+
+async function duplicateProduct(productId) {
+  const product = productsCache.find((p) => p.id === Number(productId));
+  if (!product) return;
+
+  const payload = {
+    name: `${product.name} copia`,
+    slug: slugify(`${product.name}-copia-${Date.now()}`),
+    category_id: product.category_id,
+    price: product.price,
+    price_on_request: product.price_on_request || false,
+    description: product.description,
+    sort_order: Number(product.sort_order || 1) + 1,
+    featured: false,
+    active: false,
+    image_url: product.image_url || ""
+  };
+
+  const { error } = await supabaseClient.from("products").insert([payload]);
+  if (error) {
+    adminStatus.textContent = `Errore duplicazione: ${error.message}`;
+    return;
+  }
+
+  adminStatus.textContent = "Prodotto duplicato.";
   loadProducts();
 }
 
@@ -343,38 +378,11 @@ document.querySelectorAll("[data-products-filter]").forEach((btn) => {
   });
 });
 
-checkSession();
-
-
-async function duplicateProduct(productId) {
-  const product = productsCache.find((p) => p.id === Number(productId));
-  if (!product) return;
-
-  const payload = {
-    name: `${product.name} copia`,
-    slug: slugify(`${product.name}-copia-${Date.now()}`),
-    category_id: product.category_id,
-    price: product.price,
-    description: product.description,
-    featured: false,
-    active: false,
-    sort_order: Number(product.sort_order || 1) + 1,
-    image_url: product.image_url || ""
-  };
-
-  const { error } = await supabaseClient.from("products").insert([payload]);
-  if (error) {
-    adminStatus.textContent = `Errore duplicazione: ${error.message}`;
-    return;
-  }
-  adminStatus.textContent = "Prodotto duplicato.";
-  loadProducts();
-}
-
-const productsSearch = document.getElementById("productsSearch");
 if (productsSearch) {
   productsSearch.addEventListener("input", (event) => {
     currentSearch = event.target.value;
     renderProducts();
   });
 }
+
+checkSession();
