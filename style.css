@@ -431,3 +431,50 @@ input:focus,select:focus,textarea:focus{
   .cart-header h3{font-size:1.6rem}
   .footer-grid{gap:18px}
 }
+
+
+.admin-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px
+}
+.admin-stat-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px 16px;
+  background:rgba(255,255,255,.6);
+  display:grid;
+  gap:6px
+}
+.admin-stat-card small{color:var(--muted)}
+.admin-stat-card strong{font-size:1.6rem}
+.orders-toolbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px
+}
+.orders-filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px
+}
+.order-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px
+}
+.btn-danger{
+  background:#8e2f29;
+  color:#fff
+}
+.btn-danger:hover{
+  background:#772620
+}
+@media (max-width:840px){
+  .orders-toolbar{flex-direction:column}
+  .admin-stats{grid-template-columns:1fr}
+}

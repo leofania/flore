@@ -28,7 +28,7 @@
         <div>
           <p class="eyebrow">Admin</p>
           <h2>Gestione ordini</h2>
-          <p class="section-copy">Accedi con email e password Supabase per vedere gli ordini.</p>
+          <p class="section-copy">Accedi con email e password Supabase per gestire gli ordini in modo completo.</p>
         </div>
       </div>
 
@@ -53,11 +53,36 @@
             <button class="btn btn-secondary" id="adminRefreshBtn" type="button">Aggiorna ordini</button>
             <button class="btn btn-secondary" id="adminLogoutBtn" type="button">Logout</button>
           </div>
+
           <p id="adminStatus" class="section-copy">Non autenticato.</p>
+
+          <div class="admin-stats" id="adminStats">
+            <article class="admin-stat-card">
+              <small>Ordini</small>
+              <strong id="statOrders">0</strong>
+            </article>
+            <article class="admin-stat-card">
+              <small>Incassi</small>
+              <strong id="statRevenue">€0</strong>
+            </article>
+          </div>
         </section>
 
         <section class="summary-card">
-          <h3 class="admin-title">Ordini ricevuti</h3>
+          <div class="orders-toolbar">
+            <div>
+              <h3 class="admin-title" style="margin-bottom:6px;">Ordini ricevuti</h3>
+              <p class="section-copy" style="margin:0;">Filtra, completa o elimina gli ordini.</p>
+            </div>
+
+            <div class="orders-filters">
+              <button class="filter-btn active" data-admin-filter="all" type="button">Tutti</button>
+              <button class="filter-btn" data-admin-filter="today" type="button">Oggi</button>
+              <button class="filter-btn" data-admin-filter="week" type="button">Settimana</button>
+              <button class="filter-btn" data-admin-filter="month" type="button">Mese</button>
+            </div>
+          </div>
+
           <div id="ordersList" class="orders-list">
             <p class="empty-message">Effettua il login per vedere gli ordini.</p>
           </div>
