@@ -16,6 +16,7 @@ const saveProductBtn = document.getElementById("saveProductBtn");
 const categorySelect = document.getElementById("productCategory");
 
 let currentFilter = "all";
+let currentSearch = "";
 let productsCache = [];
 let categoriesCache = [];
 
@@ -51,14 +52,20 @@ function resetForm() {
   document.getElementById("productId").value = "";
   document.getElementById("productFeatured").value = "false";
   document.getElementById("productActive").value = "true";
+  document.getElementById("productSortOrder").value = "1";
   document.getElementById("productImageUrl").value = "";
   if (categorySelect.options.length) categorySelect.selectedIndex = 0;
 }
 
 function applyFilter(products) {
-  if (currentFilter === "active") return products.filter((p) => p.active === true);
-  if (currentFilter === "inactive") return products.filter((p) => p.active === false);
-  return products;
+  let filtered = products;
+  if (currentFilter === "active") filtered = filtered.filter((p) => p.active === true);
+  if (currentFilter === "inactive") filtered = filtered.filter((p) => p.active === false);
+  if (currentSearch.trim()) {
+    const q = currentSearch.trim().toLowerCase();
+    filtered = filtered.filter((p) => String(p.name || "").toLowerCase().includes(q));
+  }
+  return filtered;
 }
 
 function getCategoryNameById(categoryId) {
@@ -97,6 +104,7 @@ function renderProducts() {
           <div><strong>Categoria:</strong> ${getCategoryNameById(product.category_id)}</div>
           <div><strong>Descrizione:</strong> ${product.description || "-"}</div>
           <div><strong>In evidenza:</strong> ${product.featured ? "Sì" : "No"}</div>
+          <div><strong>Ordine:</strong> ${product.sort_order ?? "-"}</div>
           <div><strong>Slug:</strong> ${product.slug || "-"}</div>
         </div>
       </div>
@@ -104,6 +112,7 @@ function renderProducts() {
       <div class="order-actions">
         <button class="btn btn-secondary" data-edit-product="${product.id}" type="button">Modifica</button>
         <button class="btn btn-secondary" data-toggle-product="${product.id}" type="button">${product.active ? "Segna non disponibile" : "Rendi disponibile"}</button>
+        <button class="btn btn-secondary" data-duplicate-product="${product.id}" type="button">Duplica</button>
         <button class="btn btn-danger" data-delete-product="${product.id}" type="button">Elimina</button>
       </div>
     `;
@@ -133,6 +142,7 @@ async function loadProducts() {
   const { data, error } = await supabaseClient
     .from("products")
     .select("*")
+    .order("sort_order", { ascending: true, nullsFirst: false })
     .order("id", { ascending: false });
 
   if (error) {
@@ -154,6 +164,7 @@ function fillForm(productId) {
   document.getElementById("productDescription").value = product.description || "";
   document.getElementById("productFeatured").value = product.featured ? "true" : "false";
   document.getElementById("productActive").value = product.active ? "true" : "false";
+  document.getElementById("productSortOrder").value = product.sort_order ?? 1;
   document.getElementById("productImageUrl").value = product.image_url || "";
   if (product.category_id) categorySelect.value = String(product.category_id);
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -192,6 +203,7 @@ async function saveProduct(event) {
     const category_id = Number(document.getElementById("productCategory").value || 0);
     const price = Number(document.getElementById("productPrice").value || 0);
     const description = document.getElementById("productDescription").value.trim();
+    const sort_order = Number(document.getElementById("productSortOrder").value || 1);
     const featured = document.getElementById("productFeatured").value === "true";
     const active = document.getElementById("productActive").value === "true";
     const image_url = await uploadImageIfNeeded();
@@ -205,6 +217,7 @@ async function saveProduct(event) {
       description,
       featured,
       active,
+      sort_order,
       image_url
     };
 
@@ -312,10 +325,12 @@ productForm.addEventListener("submit", saveProduct);
 document.addEventListener("click", (event) => {
   const editId = event.target.getAttribute("data-edit-product");
   const toggleId = event.target.getAttribute("data-toggle-product");
+  const duplicateId = event.target.getAttribute("data-duplicate-product");
   const deleteId = event.target.getAttribute("data-delete-product");
 
   if (editId) fillForm(editId);
   if (toggleId) toggleProduct(toggleId);
+  if (duplicateId) duplicateProduct(duplicateId);
   if (deleteId) deleteProduct(deleteId);
 });
 
@@ -329,3 +344,37 @@ document.querySelectorAll("[data-products-filter]").forEach((btn) => {
 });
 
 checkSession();
+
+
+async function duplicateProduct(productId) {
+  const product = productsCache.find((p) => p.id === Number(productId));
+  if (!product) return;
+
+  const payload = {
+    name: `${product.name} copia`,
+    slug: slugify(`${product.name}-copia-${Date.now()}`),
+    category_id: product.category_id,
+    price: product.price,
+    description: product.description,
+    featured: false,
+    active: false,
+    sort_order: Number(product.sort_order || 1) + 1,
+    image_url: product.image_url || ""
+  };
+
+  const { error } = await supabaseClient.from("products").insert([payload]);
+  if (error) {
+    adminStatus.textContent = `Errore duplicazione: ${error.message}`;
+    return;
+  }
+  adminStatus.textContent = "Prodotto duplicato.";
+  loadProducts();
+}
+
+const productsSearch = document.getElementById("productsSearch");
+if (productsSearch) {
+  productsSearch.addEventListener("input", (event) => {
+    currentSearch = event.target.value;
+    renderProducts();
+  });
+}

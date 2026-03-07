@@ -144,8 +144,7 @@ function renderProducts() {
         <img src="${image}" alt="${product.name}" loading="lazy" />
       </div>
       <div class="product-content">
-        <span class="product-category">${getCategoryName(product.category_id)}</span>
-        <h3 class="product-title">${product.name}</h3>
+        <div class="product-badges">${product.featured ? '<span class="catalog-badge catalog-badge-featured">In evidenza</span>' : ""}${product.active === false ? '<span class="catalog-badge catalog-badge-unavailable">Non disponibile</span>' : ""}</div>\n        <span class="product-category">${getCategoryName(product.category_id)}</span>\n        <h3 class="product-title">${product.name}</h3>
         <p class="product-description">${product.description || "Composizione floreale naturale ed elegante."}</p>
         <div class="product-bottom">
           <strong class="product-price">${formatPrice(product.price)}</strong>
@@ -281,6 +280,8 @@ async function loadProducts() {
       .from("products")
       .select("*")
       .eq("active", true)
+      .order("sort_order", { ascending: true, nullsFirst: false })
+      .order("featured", { ascending: false })
       .order("id", { ascending: true });
 
     if (error) {

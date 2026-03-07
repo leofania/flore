@@ -12,6 +12,7 @@ const statOrders = document.getElementById("statOrders");
 const statRevenue = document.getElementById("statRevenue");
 
 let currentFilter = "all";
+let currentSearch = "";
 let ordersCache = [];
 let itemsCache = [];
 
@@ -45,10 +46,18 @@ function isThisMonth(date) {
 }
 
 function applyFilter(orders) {
-  if (currentFilter === "today") return orders.filter(o => o.created_at && isSameDay(o.created_at));
-  if (currentFilter === "week") return orders.filter(o => o.created_at && isThisWeek(o.created_at));
-  if (currentFilter === "month") return orders.filter(o => o.created_at && isThisMonth(o.created_at));
-  return orders;
+  let filtered = orders;
+  if (currentFilter === "today") filtered = filtered.filter(o => o.created_at && isSameDay(o.created_at));
+  if (currentFilter === "week") filtered = filtered.filter(o => o.created_at && isThisWeek(o.created_at));
+  if (currentFilter === "month") filtered = filtered.filter(o => o.created_at && isThisMonth(o.created_at));
+  if (currentSearch.trim()) {
+    const q = currentSearch.trim().toLowerCase();
+    filtered = filtered.filter(o =>
+      String(o.customer_name || "").toLowerCase().includes(q) ||
+      String(o.phone || "").toLowerCase().includes(q)
+    );
+  }
+  return filtered;
 }
 
 function updateStats(orders) {
@@ -109,6 +118,7 @@ function renderOrders() {
       </div>
 
       <div class="order-actions">
+        <a class="btn btn-secondary" href="https://wa.me/${String(order.phone || "").replace(/\D/g,"")}" target="_blank" rel="noreferrer">WhatsApp</a>
         <button class="btn btn-secondary" data-complete="${order.id}" type="button">Segna come completato</button>
         <button class="btn btn-danger" data-delete="${order.id}" type="button">Elimina ordine</button>
       </div>
@@ -236,3 +246,12 @@ document.querySelectorAll("[data-admin-filter]").forEach((btn) => {
 });
 
 checkSession();
+
+
+const ordersSearch = document.getElementById("ordersSearch");
+if (ordersSearch) {
+  ordersSearch.addEventListener("input", (event) => {
+    currentSearch = event.target.value;
+    renderOrders();
+  });
+}
