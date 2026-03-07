@@ -520,3 +520,108 @@ input:focus,select:focus,textarea:focus{
 @media (max-width:840px){
   .header-actions{flex-wrap:wrap}
 }
+
+
+/* v9 frontend image upgrade */
+.hero-photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  position:absolute;
+  inset:0;
+}
+.hero-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.12) 40%, rgba(0,0,0,.18));
+}
+.hero-stamp{
+  z-index:2;
+  color:rgba(255,255,255,.92)
+}
+.portfolio-media{
+  min-height:280px;
+  position:relative;
+  overflow:hidden;
+}
+.portfolio-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.portfolio-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.12));
+  pointer-events:none;
+}
+.editorial-section{
+  padding-top:20px;
+}
+.editorial-grid{
+  display:grid;
+  grid-template-columns:1.12fr .88fr;
+  gap:24px;
+  align-items:stretch;
+}
+.editorial-card{
+  background:rgba(255,253,251,.82);
+  border:1px solid var(--line);
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.editorial-photo{
+  width:100%;
+  height:100%;
+  min-height:620px;
+  object-fit:cover;
+  display:block;
+}
+.editorial-card-text{
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:24px;
+}
+.editorial-quote{
+  margin:0;
+  font-family:"Cormorant Garamond",serif;
+  font-size:2.4rem;
+  line-height:1.05;
+  letter-spacing:-.02em;
+}
+.editorial-person{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.editorial-person-photo{
+  width:92px;
+  height:92px;
+  border-radius:22px;
+  object-fit:cover;
+}
+.editorial-person span{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+@media (max-width:1100px){
+  .editorial-grid{grid-template-columns:1fr}
+  .editorial-photo{min-height:420px}
+}
+@media (max-width:560px){
+  .hero h1{font-size:2.5rem}
+  .hero-visual{min-height:260px}
+  .editorial-card{border-radius:22px}
+  .editorial-card-text{padding:18px}
+  .editorial-quote{font-size:1.9rem}
+  .editorial-person-photo{width:72px;height:72px;border-radius:18px}
+  .portfolio-media{min-height:220px}
+}
