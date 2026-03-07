@@ -1,26 +1,229 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
-<meta charset="UTF-8">
-<title>Florè - Ordina i tuoi fiori</title>
-
-<link rel="stylesheet" href="style.css">
-
-<!-- Supabase JS -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Florè — Flower Delivery</title>
+  <meta name="description" content="Ordina bouquet e composizioni floreali con consegna programmata." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#" class="brand">
+        <span class="brand-mark">✿</span>
+        <span>Florè</span>
+      </a>
 
-<h1>Florè 🌸</h1>
-<p>Ordina il tuo bouquet</p>
+      <nav class="desktop-nav">
+        <a href="#catalogo">Bouquet</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#checkout">Ordina</a>
+      </nav>
 
-<div id="products" class="products"></div>
+      <button class="cart-button" id="openCartBtn" aria-label="Apri carrello">
+        <span>Carrello</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
 
-<script src="script.js"></script>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Flower delivery elegante e veloce</p>
+          <h1>Fiori che parlano per te.</h1>
+          <p class="hero-text">
+            Bouquet curati, composizioni floreali e consegne programmate per compleanni,
+            anniversari, occasioni speciali ed eventi.
+          </p>
 
+          <div class="hero-actions">
+            <a href="#catalogo" class="btn btn-primary">Scopri il catalogo</a>
+            <a href="#checkout" class="btn btn-secondary">Prenota una consegna</a>
+          </div>
+
+          <div class="hero-points">
+            <div class="point">
+              <strong>Consegna programmata</strong>
+              <span>Scegli giorno, fascia oraria e messaggio.</span>
+            </div>
+            <div class="point">
+              <strong>Design floreale</strong>
+              <span>Composizioni eleganti con stile riconoscibile.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card hero-card-main">
+            <div class="hero-flower hero-flower-1"></div>
+            <div class="hero-flower hero-flower-2"></div>
+            <div class="hero-flower hero-flower-3"></div>
+          </div>
+          <div class="floating-card floating-top">
+            <span class="mini-label">Occasioni</span>
+            <strong>Anniversari, compleanni, sorprese</strong>
+          </div>
+          <div class="floating-card floating-bottom">
+            <span class="mini-label">Messaggio regalo</span>
+            <strong>Personalizza il biglietto</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container trust-grid">
+        <div>Consegna programmata</div>
+        <div>Biglietto personalizzato</div>
+        <div>Bouquet ed eventi</div>
+        <div>Esperienza mobile-first</div>
+      </div>
+    </section>
+
+    <section class="section container" id="catalogo">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Catalogo</p>
+          <h2>I bouquet più richiesti</h2>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Tutti</button>
+          <button class="filter-btn" data-filter="bouquet">Bouquet</button>
+          <button class="filter-btn" data-filter="box">Flower Box</button>
+        </div>
+      </div>
+
+      <div id="productsState" class="state-message">Caricamento prodotti...</div>
+      <div id="products" class="products-grid"></div>
+    </section>
+
+    <section class="section section-soft" id="servizi">
+      <div class="container services-grid">
+        <article class="service-card">
+          <div class="service-icon">✿</div>
+          <h3>Consegne su prenotazione</h3>
+          <p>Programma la consegna e indica la fascia oraria preferita.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-icon">♡</div>
+          <h3>Messaggio personalizzato</h3>
+          <p>Aggiungi un biglietto regalo direttamente in fase di ordine.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-icon">✦</div>
+          <h3>Eventi & ricorrenze</h3>
+          <p>Perfetto anche per richieste più curate e composizioni su misura.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container" id="checkout">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Checkout</p>
+          <h2>Completa il tuo ordine</h2>
+        </div>
+      </div>
+
+      <div class="checkout-layout">
+        <form id="checkoutForm" class="checkout-card">
+          <div class="form-grid">
+            <div class="field full">
+              <label for="customerName">Nome e cognome</label>
+              <input type="text" id="customerName" required placeholder="Es. Maria Rossi" />
+            </div>
+
+            <div class="field">
+              <label for="customerPhone">Telefono</label>
+              <input type="tel" id="customerPhone" required placeholder="+39 3xx xxx xxxx" />
+            </div>
+
+            <div class="field">
+              <label for="deliveryDate">Data consegna</label>
+              <input type="date" id="deliveryDate" required />
+            </div>
+
+            <div class="field full">
+              <label for="deliveryAddress">Indirizzo di consegna</label>
+              <input type="text" id="deliveryAddress" required placeholder="Via, civico, città" />
+            </div>
+
+            <div class="field">
+              <label for="deliveryTime">Fascia oraria</label>
+              <select id="deliveryTime" required>
+                <option value="">Seleziona</option>
+                <option>09:00 - 12:00</option>
+                <option>12:00 - 15:00</option>
+                <option>15:00 - 18:00</option>
+                <option>18:00 - 20:00</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="cardMessage">Messaggio regalo</label>
+              <textarea id="cardMessage" rows="4" placeholder="Scrivi qui il tuo messaggio..."></textarea>
+            </div>
+          </div>
+
+          <div class="checkout-actions">
+            <button type="submit" class="btn btn-primary btn-block" id="submitOrderBtn">
+              Invia ordine
+            </button>
+            <p class="form-note">Pagamento disattivato: l'ordine viene registrato e potrai confermare manualmente il contatto.</p>
+          </div>
+        </form>
+
+        <aside class="summary-card">
+          <div class="summary-head">
+            <h3>Riepilogo ordine</h3>
+            <button class="text-button" id="openCartBtnSecondary" type="button">Modifica carrello</button>
+          </div>
+
+          <div id="summaryItems" class="summary-items">
+            <p class="empty-summary">Il tuo carrello è vuoto.</p>
+          </div>
+
+          <div class="summary-row">
+            <span>Totale</span>
+            <strong id="summaryTotal">€0</strong>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-panel">
+      <div class="cart-header">
+        <h3>Il tuo carrello</h3>
+        <button id="closeCartBtn" class="icon-button" aria-label="Chiudi carrello" type="button">✕</button>
+      </div>
+
+      <div id="cartItems" class="cart-items">
+        <p class="empty-summary">Non hai ancora aggiunto prodotti.</p>
+      </div>
+
+      <div class="cart-footer">
+        <div class="summary-row">
+          <span>Totale</span>
+          <strong id="cartTotal">€0</strong>
+        </div>
+        <a href="#checkout" class="btn btn-primary btn-block" id="goCheckoutBtn">Vai al checkout</a>
+      </div>
+    </div>
+    <div class="cart-overlay" id="cartOverlay"></div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
