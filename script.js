@@ -11,9 +11,12 @@ const cartTotal = document.getElementById("cartTotal");
 const summaryItems = document.getElementById("summaryItems");
 const summaryTotal = document.getElementById("summaryTotal");
 const cartDrawer = document.getElementById("cartDrawer");
+const cartOverlay = document.getElementById("cartOverlay");
 const toast = document.getElementById("toast");
 const checkoutForm = document.getElementById("checkoutForm");
 const submitOrderBtn = document.getElementById("submitOrderBtn");
+const mobileNav = document.getElementById("mobileNav");
+const navToggle = document.getElementById("navToggle");
 
 let products = [];
 let activeFilter = "all";
@@ -27,6 +30,14 @@ function saveCart() {
   localStorage.setItem("flore_cart", JSON.stringify(cart));
 }
 
+function lockBody() {
+  document.body.classList.add("no-scroll");
+}
+
+function unlockBody() {
+  document.body.classList.remove("no-scroll");
+}
+
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
@@ -36,11 +47,17 @@ function showToast(message) {
 function openCart() {
   cartDrawer.classList.add("open");
   cartDrawer.setAttribute("aria-hidden", "false");
+  lockBody();
 }
 
 function closeCart() {
   cartDrawer.classList.remove("open");
   cartDrawer.setAttribute("aria-hidden", "true");
+  unlockBody();
+}
+
+function toggleMobileNav() {
+  mobileNav.classList.toggle("open");
 }
 
 function fallbackImage(label) {
@@ -48,37 +65,19 @@ function fallbackImage(label) {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
       <defs>
         <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#d97b98"/>
-          <stop offset="55%" stop-color="#efbfd0"/>
-          <stop offset="100%" stop-color="#fff6f7"/>
+          <stop offset="0%" stop-color="#e3c2b8"/>
+          <stop offset="52%" stop-color="#cd857b"/>
+          <stop offset="100%" stop-color="#b8473f"/>
         </linearGradient>
       </defs>
       <rect width="800" height="600" fill="url(#g)"/>
-      <g opacity="0.72">
-        <circle cx="210" cy="180" r="72" fill="#fff8f9"/>
-        <circle cx="585" cy="200" r="92" fill="#fff8f9"/>
-        <circle cx="410" cy="385" r="104" fill="#fff8f9"/>
+      <g opacity="0.45" fill="#fff">
+        <circle cx="590" cy="150" r="90"/>
+        <circle cx="525" cy="250" r="48"/>
+        <circle cx="690" cy="260" r="56"/>
+        <circle cx="610" cy="360" r="70"/>
       </g>
-      <g fill="#c86283" opacity="0.86">
-        <circle cx="210" cy="125" r="34"/>
-        <circle cx="265" cy="180" r="34"/>
-        <circle cx="210" cy="235" r="34"/>
-        <circle cx="155" cy="180" r="34"/>
-        <circle cx="585" cy="128" r="44"/>
-        <circle cx="657" cy="200" r="44"/>
-        <circle cx="585" cy="272" r="44"/>
-        <circle cx="513" cy="200" r="44"/>
-        <circle cx="410" cy="300" r="54"/>
-        <circle cx="495" cy="385" r="54"/>
-        <circle cx="410" cy="470" r="54"/>
-        <circle cx="325" cy="385" r="54"/>
-      </g>
-      <g fill="#ffe28a">
-        <circle cx="210" cy="180" r="18"/>
-        <circle cx="585" cy="200" r="22"/>
-        <circle cx="410" cy="385" r="28"/>
-      </g>
-      <text x="50%" y="550" text-anchor="middle" fill="#4e2a34" font-size="34" font-family="Arial, sans-serif">${label}</text>
+      <text x="52" y="542" fill="#fff8f6" font-size="34" font-family="Georgia, serif">${label}</text>
     </svg>
   `;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
@@ -109,18 +108,16 @@ function renderProducts() {
     card.className = "product-card";
 
     card.innerHTML = `
-      <div class="product-media">
+      <div class="product-image">
         <img src="${image}" alt="${product.name}" loading="lazy" />
       </div>
       <div class="product-content">
-        <div class="product-topline">
-          <span class="product-category">${product.category || "bouquet"}</span>
-        </div>
+        <span class="product-category">${product.category || "bouquet"}</span>
         <h3 class="product-title">${product.name}</h3>
-        <p class="product-description">${product.description || "Composizione floreale elegante e curata."}</p>
+        <p class="product-description">${product.description || "Composizione floreale naturale ed elegante."}</p>
         <div class="product-bottom">
-          <div class="product-price">${formatPrice(product.price)}</div>
-          <button class="btn btn-primary" data-add="${product.id}">Aggiungi</button>
+          <strong class="product-price">${formatPrice(product.price)}</strong>
+          <button class="btn btn-primary" data-add="${product.id}" type="button">Aggiungi</button>
         </div>
       </div>
     `;
@@ -143,8 +140,8 @@ function renderCart() {
   summaryTotal.textContent = formatPrice(getCartTotal());
 
   if (!cart.length) {
-    cartItems.innerHTML = '<p class="empty-summary">Non hai ancora aggiunto prodotti.</p>';
-    summaryItems.innerHTML = '<p class="empty-summary">Il tuo carrello è vuoto.</p>';
+    cartItems.innerHTML = '<p class="empty-message">Non hai ancora aggiunto prodotti.</p>';
+    summaryItems.innerHTML = '<p class="empty-message">Il tuo carrello è vuoto.</p>';
     return;
   }
 
@@ -163,10 +160,10 @@ function renderCart() {
         <strong>${formatPrice(item.price * item.quantity)}</strong>
       </div>
       <div class="cart-actions-inline">
-        <button class="qty-button" data-decrease="${item.id}">−</button>
+        <button class="qty-button" data-decrease="${item.id}" type="button">−</button>
         <span>${item.quantity}</span>
-        <button class="qty-button" data-increase="${item.id}">+</button>
-        <button class="text-button" data-remove="${item.id}">Rimuovi</button>
+        <button class="qty-button" data-increase="${item.id}" type="button">+</button>
+        <button class="text-button" data-remove="${item.id}" type="button">Rimuovi</button>
       </div>
     `;
     cartItems.appendChild(cartRow);
@@ -192,9 +189,8 @@ function addToCart(productId) {
 
   const existing = cart.find((item) => item.id === product.id);
 
-  if (existing) {
-    existing.quantity += 1;
-  } else {
+  if (existing) existing.quantity += 1;
+  else {
     cart.push({
       id: product.id,
       name: product.name,
@@ -205,6 +201,7 @@ function addToCart(productId) {
 
   saveCart();
   renderCart();
+  openCart();
   showToast(`${product.name} aggiunto al carrello`);
 }
 
@@ -305,7 +302,9 @@ async function submitOrder(event) {
     cart = [];
     saveCart();
     renderCart();
+    closeCart();
     showToast("Ordine registrato correttamente");
+    window.location.hash = "#checkout";
   } catch (error) {
     console.error(error);
     alert(`Errore durante il salvataggio ordine: ${error.message}`);
@@ -323,7 +322,7 @@ document.addEventListener("click", (event) => {
 
   if (addId) addToCart(addId);
   if (increaseId) updateQuantity(increaseId, 1);
-  if (decreaseId) updateQuantity(decreaseId, -1);
+  if (decreaseId) updateQuantity(increaseId || decreaseId, -1);
   if (removeId) removeItem(removeId);
 });
 
@@ -336,12 +335,24 @@ document.querySelectorAll(".filter-btn").forEach((btn) => {
   });
 });
 
+document.querySelectorAll(".mobile-nav a").forEach((link) => {
+  link.addEventListener("click", () => mobileNav.classList.remove("open"));
+});
+
 document.getElementById("openCartBtn").addEventListener("click", openCart);
 document.getElementById("openCartBtnSecondary").addEventListener("click", openCart);
 document.getElementById("closeCartBtn").addEventListener("click", closeCart);
-document.getElementById("cartOverlay").addEventListener("click", closeCart);
 document.getElementById("goCheckoutBtn").addEventListener("click", closeCart);
+cartOverlay.addEventListener("click", closeCart);
+navToggle.addEventListener("click", toggleMobileNav);
 checkoutForm.addEventListener("submit", submitOrder);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeCart();
+    mobileNav.classList.remove("open");
+  }
+});
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);

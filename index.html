@@ -3,195 +3,247 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Florè — Flower Delivery</title>
-  <meta name="description" content="Ordina bouquet e composizioni floreali con consegna programmata." />
+  <title>Florè — Flower Designer</title>
+  <meta name="description" content="Bouquet, allestimenti floreali e progetti su misura per matrimoni, eventi e momenti speciali." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="container nav">
-      <a href="#" class="brand">
-        <span class="brand-mark">✿</span>
-        <span>Florè</span>
+      <a href="#" class="brand" aria-label="Florè home">
+        <img src="logo-flore.svg" alt="Florè" class="brand-logo" />
       </a>
 
+      <button class="nav-toggle" id="navToggle" aria-label="Apri menu" type="button">☰</button>
+
       <nav class="desktop-nav">
-        <a href="#catalogo">Bouquet</a>
+        <a href="#bouquet">Bouquet</a>
         <a href="#servizi">Servizi</a>
+        <a href="#portfolio">Portfolio</a>
         <a href="#checkout">Ordina</a>
       </nav>
 
-      <button class="cart-button" id="openCartBtn" aria-label="Apri carrello">
+      <button class="cart-button" id="openCartBtn" aria-label="Apri carrello" type="button">
         <span>Carrello</span>
         <span class="cart-badge" id="cartCount">0</span>
       </button>
     </div>
+
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="#bouquet">Bouquet</a>
+      <a href="#servizi">Servizi</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#checkout">Ordina</a>
+    </nav>
   </header>
 
   <main>
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Flower delivery elegante e veloce</p>
-          <h1>Fiori che parlano per te.</h1>
+          <p class="eyebrow">Flower designer</p>
+          <h1>Fiori che raccontano emozioni.</h1>
           <p class="hero-text">
-            Bouquet curati, composizioni floreali e consegne programmate per compleanni,
-            anniversari, occasioni speciali ed eventi.
+            Bouquet curati, allestimenti floreali e progetti su misura per
+            matrimoni, eventi e momenti speciali.
           </p>
 
           <div class="hero-actions">
-            <a href="#catalogo" class="btn btn-primary">Scopri il catalogo</a>
-            <a href="#checkout" class="btn btn-secondary">Prenota una consegna</a>
+            <a href="#bouquet" class="btn btn-primary">Scopri i bouquet</a>
+            <a href="#portfolio" class="btn btn-secondary">Vedi i progetti</a>
           </div>
 
-          <div class="hero-points">
-            <div class="point">
+          <div class="hero-notes">
+            <article class="note-card">
               <strong>Consegna programmata</strong>
-              <span>Scegli giorno, fascia oraria e messaggio.</span>
-            </div>
-            <div class="point">
-              <strong>Design floreale</strong>
-              <span>Composizioni eleganti con stile riconoscibile.</span>
-            </div>
+              <span>Scegli giorno, fascia oraria e messaggio regalo.</span>
+            </article>
+            <article class="note-card">
+              <strong>Design floreale su misura</strong>
+              <span>Per bouquet, matrimoni, aziende ed eventi speciali.</span>
+            </article>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-card hero-card-main">
-            <div class="hero-flower hero-flower-1"></div>
-            <div class="hero-flower hero-flower-2"></div>
-            <div class="hero-flower hero-flower-3"></div>
+        <div class="hero-media">
+          <div class="hero-visual">
+            <div class="hero-stamp">Florè</div>
           </div>
-          <div class="floating-card floating-top">
-            <span class="mini-label">Occasioni</span>
-            <strong>Anniversari, compleanni, sorprese</strong>
+          <div class="hero-floating hero-floating-top">
+            <span class="mini-label">Mood</span>
+            <strong>Naturale, elegante, contemporaneo</strong>
           </div>
-          <div class="floating-card floating-bottom">
-            <span class="mini-label">Messaggio regalo</span>
-            <strong>Personalizza il biglietto</strong>
+          <div class="hero-floating hero-floating-bottom">
+            <span class="mini-label">Ordina online</span>
+            <strong>Bouquet + messaggio + consegna</strong>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="trust-strip">
-      <div class="container trust-grid">
-        <div>Consegna programmata</div>
-        <div>Biglietto personalizzato</div>
-        <div>Bouquet ed eventi</div>
-        <div>Esperienza mobile-first</div>
+    <section class="strip">
+      <div class="container strip-grid">
+        <span>Bouquet personalizzati</span>
+        <span>Allestimenti floreali</span>
+        <span>Matrimoni & eventi</span>
+        <span>Responsive mobile-first</span>
       </div>
     </section>
 
-    <section class="section container" id="catalogo">
+    <section class="section container" id="servizi">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Catalogo</p>
-          <h2>I bouquet più richiesti</h2>
+          <p class="eyebrow">Servizi</p>
+          <h2>Ciò che Florè realizza</h2>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <article class="service-card">
+          <div class="service-number">01</div>
+          <h3>Allestimenti personalizzati</h3>
+          <p>Progetti floreali pensati per dialogare con luoghi, persone e atmosfera.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-number">02</div>
+          <h3>Centrotavola, bouquet e decorazioni naturali</h3>
+          <p>Composizioni curate con equilibrio, luce, materia e sensibilità estetica.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-number">03</div>
+          <h3>Matrimoni, aziende ed eventi speciali</h3>
+          <p>Soluzioni su misura per raccontare uno stile attraverso fiori e dettagli.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section portfolio-section" id="portfolio">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Portfolio</p>
+            <h2>Un’estetica naturale ma ricercata</h2>
+            <p class="section-copy">
+              Il sito è pronto per ospitare una selezione di immagini editoriali, progetti e matrimoni.
+            </p>
+          </div>
+        </div>
+
+        <div class="portfolio-grid">
+          <article class="portfolio-card tall">
+            <div class="portfolio-media media-1"></div>
+            <div class="portfolio-content">
+              <span class="portfolio-tag">Wedding table</span>
+              <h3>Tra pietra antica e luce dorata</h3>
+            </div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-media media-2"></div>
+            <div class="portfolio-content">
+              <span class="portfolio-tag">Editorial flowers</span>
+              <h3>Dettagli naturali</h3>
+            </div>
+          </article>
+
+          <article class="portfolio-card">
+            <div class="portfolio-media media-3"></div>
+            <div class="portfolio-content">
+              <span class="portfolio-tag">Events</span>
+              <h3>Composizioni e racconti visivi</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="bouquet">
+      <div class="section-head section-head-products">
+        <div>
+          <p class="eyebrow">Bouquet</p>
+          <h2>Collezione Florè</h2>
         </div>
 
         <div class="filters">
-          <button class="filter-btn active" data-filter="all">Tutti</button>
-          <button class="filter-btn" data-filter="bouquet">Bouquet</button>
-          <button class="filter-btn" data-filter="box">Flower Box</button>
+          <button class="filter-btn active" data-filter="all" type="button">Tutti</button>
+          <button class="filter-btn" data-filter="bouquet" type="button">Bouquet</button>
+          <button class="filter-btn" data-filter="box" type="button">Flower box</button>
         </div>
       </div>
 
-      <div id="productsState" class="state-message">Caricamento prodotti...</div>
+      <p id="productsState" class="state-message">Caricamento prodotti...</p>
       <div id="products" class="products-grid"></div>
     </section>
 
-    <section class="section section-soft" id="servizi">
-      <div class="container services-grid">
-        <article class="service-card">
-          <div class="service-icon">✿</div>
-          <h3>Consegne su prenotazione</h3>
-          <p>Programma la consegna e indica la fascia oraria preferita.</p>
-        </article>
-        <article class="service-card">
-          <div class="service-icon">♡</div>
-          <h3>Messaggio personalizzato</h3>
-          <p>Aggiungi un biglietto regalo direttamente in fase di ordine.</p>
-        </article>
-        <article class="service-card">
-          <div class="service-icon">✦</div>
-          <h3>Eventi & ricorrenze</h3>
-          <p>Perfetto anche per richieste più curate e composizioni su misura.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section container" id="checkout">
-      <div class="section-head">
+    <section class="section checkout-section" id="checkout">
+      <div class="container checkout-layout">
         <div>
-          <p class="eyebrow">Checkout</p>
-          <h2>Completa il tuo ordine</h2>
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Ordina</p>
+              <h2>Completa il tuo ordine</h2>
+              <p class="section-copy">Pagamento non attivo: l’ordine viene registrato e potrai poi confermarlo manualmente.</p>
+            </div>
+          </div>
+
+          <form id="checkoutForm" class="checkout-card">
+            <div class="form-grid">
+              <div class="field full">
+                <label for="customerName">Nome e cognome</label>
+                <input type="text" id="customerName" required placeholder="Es. Maria Rossi">
+              </div>
+
+              <div class="field">
+                <label for="customerPhone">Telefono</label>
+                <input type="tel" id="customerPhone" required placeholder="+39 3xx xxx xxxx">
+              </div>
+
+              <div class="field">
+                <label for="deliveryDate">Data consegna</label>
+                <input type="date" id="deliveryDate" required>
+              </div>
+
+              <div class="field full">
+                <label for="deliveryAddress">Indirizzo di consegna</label>
+                <input type="text" id="deliveryAddress" required placeholder="Via, civico, città">
+              </div>
+
+              <div class="field">
+                <label for="deliveryTime">Fascia oraria</label>
+                <select id="deliveryTime" required>
+                  <option value="">Seleziona</option>
+                  <option>09:00 - 12:00</option>
+                  <option>12:00 - 15:00</option>
+                  <option>15:00 - 18:00</option>
+                  <option>18:00 - 20:00</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="cardMessage">Messaggio regalo</label>
+                <textarea id="cardMessage" rows="4" placeholder="Scrivi qui il tuo messaggio..."></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" id="submitOrderBtn" type="submit">Invia ordine</button>
+          </form>
         </div>
-      </div>
-
-      <div class="checkout-layout">
-        <form id="checkoutForm" class="checkout-card">
-          <div class="form-grid">
-            <div class="field full">
-              <label for="customerName">Nome e cognome</label>
-              <input type="text" id="customerName" required placeholder="Es. Maria Rossi" />
-            </div>
-
-            <div class="field">
-              <label for="customerPhone">Telefono</label>
-              <input type="tel" id="customerPhone" required placeholder="+39 3xx xxx xxxx" />
-            </div>
-
-            <div class="field">
-              <label for="deliveryDate">Data consegna</label>
-              <input type="date" id="deliveryDate" required />
-            </div>
-
-            <div class="field full">
-              <label for="deliveryAddress">Indirizzo di consegna</label>
-              <input type="text" id="deliveryAddress" required placeholder="Via, civico, città" />
-            </div>
-
-            <div class="field">
-              <label for="deliveryTime">Fascia oraria</label>
-              <select id="deliveryTime" required>
-                <option value="">Seleziona</option>
-                <option>09:00 - 12:00</option>
-                <option>12:00 - 15:00</option>
-                <option>15:00 - 18:00</option>
-                <option>18:00 - 20:00</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="cardMessage">Messaggio regalo</label>
-              <textarea id="cardMessage" rows="4" placeholder="Scrivi qui il tuo messaggio..."></textarea>
-            </div>
-          </div>
-
-          <div class="checkout-actions">
-            <button type="submit" class="btn btn-primary btn-block" id="submitOrderBtn">
-              Invia ordine
-            </button>
-            <p class="form-note">Pagamento disattivato: l'ordine viene registrato e potrai confermare manualmente il contatto.</p>
-          </div>
-        </form>
 
         <aside class="summary-card">
           <div class="summary-head">
-            <h3>Riepilogo ordine</h3>
-            <button class="text-button" id="openCartBtnSecondary" type="button">Modifica carrello</button>
+            <h3>Riepilogo</h3>
+            <button class="text-button" id="openCartBtnSecondary" type="button">Apri carrello</button>
           </div>
 
           <div id="summaryItems" class="summary-items">
-            <p class="empty-summary">Il tuo carrello è vuoto.</p>
+            <p class="empty-message">Il tuo carrello è vuoto.</p>
           </div>
 
-          <div class="summary-row">
+          <div class="summary-row total-row">
             <span>Totale</span>
             <strong id="summaryTotal">€0</strong>
           </div>
@@ -201,25 +253,26 @@
   </main>
 
   <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-overlay" id="cartOverlay"></div>
+
     <div class="cart-panel">
       <div class="cart-header">
         <h3>Il tuo carrello</h3>
-        <button id="closeCartBtn" class="icon-button" aria-label="Chiudi carrello" type="button">✕</button>
+        <button class="icon-button" id="closeCartBtn" type="button" aria-label="Chiudi carrello">✕</button>
       </div>
 
       <div id="cartItems" class="cart-items">
-        <p class="empty-summary">Non hai ancora aggiunto prodotti.</p>
+        <p class="empty-message">Non hai ancora aggiunto prodotti.</p>
       </div>
 
       <div class="cart-footer">
-        <div class="summary-row">
+        <div class="summary-row total-row">
           <span>Totale</span>
           <strong id="cartTotal">€0</strong>
         </div>
         <a href="#checkout" class="btn btn-primary btn-block" id="goCheckoutBtn">Vai al checkout</a>
       </div>
     </div>
-    <div class="cart-overlay" id="cartOverlay"></div>
   </aside>
 
   <div class="toast" id="toast"></div>
