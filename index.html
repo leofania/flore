@@ -27,10 +27,13 @@
         <a href="#checkout">Ordina</a>
       </nav>
 
-      <button class="cart-button" id="openCartBtn" aria-label="Apri carrello" type="button">
-        <span>Carrello</span>
-        <span class="cart-badge" id="cartCount">0</span>
-      </button>
+      <div class="header-actions">
+        <a class="ghost-link desktop-only" href="portfolio-flore.pdf" download>Scarica portfolio</a>
+        <button class="cart-button" id="openCartBtn" aria-label="Apri carrello" type="button">
+          <span>Carrello</span>
+          <span class="cart-badge" id="cartCount">0</span>
+        </button>
+      </div>
     </div>
 
     <nav class="mobile-nav" id="mobileNav">
@@ -38,6 +41,7 @@
       <a href="#servizi">Servizi</a>
       <a href="#portfolio">Portfolio</a>
       <a href="#checkout">Ordina</a>
+      <a href="portfolio-flore.pdf" download>Scarica portfolio</a>
     </nav>
   </header>
 
@@ -55,6 +59,7 @@
           <div class="hero-actions">
             <a href="#bouquet" class="btn btn-primary">Scopri i bouquet</a>
             <a href="#portfolio" class="btn btn-secondary">Vedi i progetti</a>
+            <a href="portfolio-flore.pdf" class="btn btn-secondary" download>Scarica portfolio</a>
           </div>
 
           <div class="hero-notes">
@@ -128,9 +133,10 @@
             <p class="eyebrow">Portfolio</p>
             <h2>Un’estetica naturale ma ricercata</h2>
             <p class="section-copy">
-              Il sito è pronto per ospitare una selezione di immagini editoriali, progetti e matrimoni.
+              Sfoglia i progetti floreali oppure scarica il portfolio completo in PDF.
             </p>
           </div>
+          <a href="portfolio-flore.pdf" class="btn btn-secondary" download>Scarica il PDF</a>
         </div>
 
         <div class="portfolio-grid">
@@ -186,7 +192,7 @@
             <div>
               <p class="eyebrow">Ordina</p>
               <h2>Completa il tuo ordine</h2>
-              <p class="section-copy">Pagamento non attivo: l’ordine viene registrato e potrai poi confermarlo manualmente.</p>
+              <p class="section-copy">Pagamento non attivo: l’ordine viene registrato e puoi inviare subito una conferma via WhatsApp.</p>
             </div>
           </div>
 
@@ -251,6 +257,33 @@
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <img src="logo-flore.svg" alt="Florè" class="footer-logo">
+        <p class="footer-copy">Flower designer per bouquet, matrimoni, aziende ed eventi speciali.</p>
+      </div>
+
+      <div>
+        <h4>Contatti</h4>
+        <ul class="footer-list">
+          <li><a href="tel:+393888513480">+39 388 851 3480</a></li>
+          <li><a href="mailto:faniamariagiovannaa@hotmail.com">faniamariagiovannaa@hotmail.com</a></li>
+          <li><a href="https://instagram.com/floreconlaeaccentata" target="_blank" rel="noreferrer">@floreconlaeaccentata</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Risorse</h4>
+        <ul class="footer-list">
+          <li><a href="portfolio-flore.pdf" download>Scarica portfolio PDF</a></li>
+          <li><a href="admin.html">Area admin ordini</a></li>
+          <li><a href="#checkout">Ordina online</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
   <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
     <div class="cart-overlay" id="cartOverlay"></div>
