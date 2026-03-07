@@ -1,28 +1,40 @@
-FLORÈ V6 — ADMIN COMPLETA
+FLORÈ V7 — ADMIN PRODOTTI COMPLETA
 
-Aggiunte:
-- bottone Elimina ordine
-- bottone Segna come completato
-- filtro ordini: tutti / oggi / settimana / mese
-- totale ordini
-- totale incassi
-- cancellazione automatica order_items quando elimini un ordine
+Nuova pagina:
+- admin-products.html
+
+Funzioni disponibili:
+- login admin
+- lista prodotti
+- aggiungi prodotto
+- modifica prodotto
+- elimina prodotto
+- carica foto prodotto
+- cambia disponibilità
+- gestisci prezzo, descrizione, categoria, featured
 
 FILE DA CARICARE SU GITHUB:
+- admin-products.html
+- admin-products.js
+- style.css
+- supabase-setup-products.sql
+
+FILE DA TENERE:
 - admin.html
 - admin.js
-- style.css
-- supabase-setup.sql
-
-FILE GIÀ ESISTENTI DA TENERE:
 - index.html
 - script.js
 - logo-flore.svg
 - portfolio-flore.pdf
 
 SUPABASE:
-Esegui tutto il file supabase-setup.sql
+1) Apri SQL Editor
+2) Esegui supabase-setup-products.sql
 
-NOTA IMPORTANTE:
-La cancellazione ordine ora funziona bene perché order_items usa ON DELETE CASCADE.
-Quindi quando elimini un ordine dalla dashboard admin, i relativi prodotti vengono rimossi automaticamente.
+IMPORTANTE:
+- crea o mantieni un utente admin in Authentication > Users
+- accedi in admin-products.html
+- le immagini vengono caricate nel bucket storage 'products'
+
+RISULTATO:
+Il cliente potrà gestire tutto dal pannello senza entrare nella dashboard Supabase.

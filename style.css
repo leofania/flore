@@ -478,3 +478,40 @@ input:focus,select:focus,textarea:focus{
   .orders-toolbar{flex-direction:column}
   .admin-stats{grid-template-columns:1fr}
 }
+
+
+.products-admin-grid{grid-template-columns:.9fr 1.1fr}
+.admin-separator{
+  border:none;
+  border-top:1px solid var(--line);
+  margin:20px 0
+}
+.product-admin-preview{
+  display:grid;
+  grid-template-columns:140px 1fr;
+  gap:16px;
+  align-items:start;
+  margin-top:10px
+}
+.product-admin-image{
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  min-height:120px;
+  background:rgba(255,255,255,.6);
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  text-align:center;
+  padding:10px
+}
+.product-admin-image img{
+  width:100%;
+  height:120px;
+  object-fit:cover
+}
+@media (max-width:840px){
+  .products-admin-grid{grid-template-columns:1fr}
+  .product-admin-preview{grid-template-columns:1fr}
+  .product-admin-image img{height:180px}
+}
