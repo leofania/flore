@@ -1,7 +1,7 @@
 // INSERISCI QUI I TUOI DATI SUPABASE
 const supabase = window.supabase.createClient(
-"YOUR_SUPABASE_PROJECT_URL",
-"YOUR_SUPABASE_PUBLISHABLE_KEY"
+"https://xduzdbrosdljzvbopzwh.supabase.co",
+"sb_publishable_nUldNy4z7YKT_q1jPcZZig_9f5wDGz8"
 )
 
 async function loadProducts(){
