@@ -1,4 +1,3 @@
-// INSERISCI QUI I TUOI DATI SUPABASE
 const supabase = window.supabase.createClient(
 "https://xduzdbrosdljzvbopzwh.supabase.co",
 "sb_publishable_nUldNy4z7YKT_q1jPcZZig_9f5wDGz8"
