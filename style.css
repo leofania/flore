@@ -218,7 +218,7 @@ img{display:block;max-width:100%}
     radial-gradient(circle at 74% 22%, rgba(255,255,255,.5), transparent 20%),
     linear-gradient(155deg, #e0b9b1 0%, #cb847b 50%, #b8473f 100%)
 }
-.product-image img{width:100%;height:100%;object-fit:cover}
+.product-image img{width:100%;height:100%;object-fit:contain}
 .product-content{padding:22px;display:flex;flex-direction:column;gap:12px;flex:1}
 .product-category{
   display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:999px;
@@ -508,7 +508,7 @@ input:focus,select:focus,textarea:focus{
 .product-admin-image img{
   width:100%;
   height:120px;
-  object-fit:cover
+  object-fit:contain
 }
 @media (max-width:840px){
   .products-admin-grid{grid-template-columns:1fr}
@@ -526,7 +526,7 @@ input:focus,select:focus,textarea:focus{
 .hero-photo{
   width:100%;
   height:100%;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
   position:absolute;
   inset:0;
@@ -549,7 +549,7 @@ input:focus,select:focus,textarea:focus{
 .portfolio-media img{
   width:100%;
   height:100%;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
 }
 .portfolio-media::after{
@@ -579,7 +579,7 @@ input:focus,select:focus,textarea:focus{
   width:100%;
   height:100%;
   min-height:620px;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
 }
 .editorial-card-text{
@@ -605,7 +605,7 @@ input:focus,select:focus,textarea:focus{
   width:92px;
   height:92px;
   border-radius:22px;
-  object-fit:cover;
+  object-fit:contain;
 }
 .editorial-person span{
   display:block;
@@ -952,7 +952,8 @@ input:focus,select:focus,textarea:focus{
 
 /* v14 hover + gallery */
 .product-image-hover{position:relative;width:100%;height:100%}
-.product-image-hover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s ease, transform .45s ease}
+.product-image-hover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+background:#f8f6f4;transition:opacity .3s ease, transform .45s ease}
 .product-image-hover img.product-image-primary{opacity:1}
 .product-image-hover img.product-image-secondary{opacity:0}
 .product-card:hover .product-image-hover img.product-image-primary{opacity:0;transform:scale(1.03)}
@@ -967,17 +968,18 @@ input:focus,select:focus,textarea:focus{
 .gallery-modal.open .gallery-modal-card{transform:translate(-50%,-50%) scale(1);opacity:1}
 .gallery-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,255,255,.88);cursor:pointer;z-index:5}
 .gallery-main-wrap{position:relative;border-radius:22px;overflow:hidden;background:var(--surface-2)}
-.gallery-main-image{width:100%;height:min(70vh,720px);object-fit:cover;display:block}
+.gallery-main-image{width:100%;height:min(70vh,720px);object-fit:contain;
+background:#f8f6f4;display:block}
 .gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border:none;border-radius:50%;background:rgba(255,255,255,.82);cursor:pointer;z-index:3;font-size:1.7rem}
 .gallery-nav-prev{left:14px}
 .gallery-nav-next{right:14px}
 .gallery-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:14px}
 .gallery-thumbs{display:flex;gap:10px;overflow:auto;margin-top:14px;padding-bottom:4px}
-.gallery-thumb{width:96px;height:96px;object-fit:cover;border-radius:14px;border:2px solid transparent;cursor:pointer;flex:0 0 auto}
+.gallery-thumb{width:96px;height:96px;object-fit:contain;border-radius:14px;border:2px solid transparent;cursor:pointer;flex:0 0 auto}
 .gallery-thumb.active{border-color:var(--brand)}
 .gallery-admin-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px}
 .gallery-admin-item{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.6)}
-.gallery-admin-item img{width:100%;height:92px;object-fit:cover;display:block}
+.gallery-admin-item img{width:100%;height:92px;object-fit:contain;display:block}
 .gallery-admin-remove{position:absolute;top:6px;right:6px;width:28px;height:28px;border:none;border-radius:50%;background:rgba(20,16,16,.75);color:#fff;cursor:pointer}
 @media (max-width:560px){
   .gallery-modal-card{width:96vw;padding:14px;border-radius:22px}
